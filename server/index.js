@@ -33,7 +33,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/auth', router);
 
-const PORT = process.env.PORT;
+
 
 connectDB();
 app.set('socketio', io);
