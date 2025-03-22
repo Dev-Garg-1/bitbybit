@@ -1,23 +1,25 @@
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import Register from './components/register';
-import Login from './components/login';
-import FreelancerDashboard from './pages/FreelancerDashboard';
-import ClientDashboard from './pages/ClientDashboard';
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
+import Register from "./components/register";
+import Login from "./components/login";
+import ClientDashboard from "./pages/ClientDashboard";
+import { Dashboard } from "./pages/index";
 
 function App() {
-  const token = localStorage.getItem('token');
-  const role = localStorage.getItem('role');
+  const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
 
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
         <Route path="/client" element={<ClientDashboard />} />
-        <Route path="/freelancer" element={<FreelancerDashboard/>} />
-
-
+        <Route path="/freelancer" element={<Dashboard />} />
         {/* {token && role === 'freelancer' ? (
           <Route path="/freelancer" element={<FreelancerDashboard />} />
         ) : token && role === 'client' ? (
