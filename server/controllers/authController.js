@@ -1,7 +1,7 @@
 const userModel = require('../models/userModel');
 const bcrypt = require('bcrypt');
 const generateToken = require('../utils/generateToken');
-
+const projectModel = require('../models/projectModel');
 const jwt = require('jsonwebtoken');
 
 
@@ -98,3 +98,39 @@ module.exports.getFreelancers = async function (req, res) {
         res.status(500).send(error.message);
     }
 }
+
+module.exports.postProject = async function(req,res){
+    try{
+        let {title, description, deadline, clientId, milestones} = req.body;
+        let project = await projectModel.create({
+            title,
+            description,
+            deadline,
+            clientId,
+            milestones
+        })
+
+        if(!project){
+            res.status(404).send("project not created");
+        }
+
+        res.status(201).send(project);
+
+    }catch(err){
+        res.status(500).send(err.message)
+    }
+};
+
+module.exports.getProjects = async function(req,res){
+    try{
+        const projectId = req.params.projectId;
+        if(!projectId){
+            res.status(404).send("project not found");
+        }
+        let project = await projectModel.findById(projectId);
+        res.status(200).send(project);
+    }
+    catch(err){
+        res.status(500).send(err.message)
+    }
+};

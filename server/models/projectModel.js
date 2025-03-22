@@ -5,11 +5,15 @@ const projectSchema = new mongoose.Schema({
   description: String,
   deadline: Date,
   clientId: String,
-  requests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Request' }],
-  
+
   milestones: [{
-    heading: String,
-    amount: Number
+    description: String,
+    amount: Number,
+    id: Number,
+    isCompleted: {
+      type: Boolean,
+      default: false
+    }
   }]
 
 });
