@@ -1,6 +1,3 @@
-✅ **`README.md` for Your Razorpay Payment Integration Project**
-
----
 
 # 💳 **Razorpay Payment Integration with MERN Stack**
 
