@@ -7,7 +7,8 @@ import {
 import Register from "./components/register";
 import Login from "./components/login";
 import ClientDashboard from "./pages/ClientDashboard";
-import { Dashboard } from "./pages/index";
+import Dashboard from "./pages/freelancer/Dashboard";
+import AdminDashboard from "./pages/AdminDashboard";
 
 function App() {
   const token = localStorage.getItem("token");
@@ -27,6 +28,7 @@ function App() {
         ) : (
           <Route path="*" element={<Navigate to="/login" />} />
         )} */}
+        <Route path="/admin" element={<AdminDashboard/>}/>
       </Routes>
     </Router>
   );

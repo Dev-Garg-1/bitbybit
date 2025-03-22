@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Menu, Transition, MenuButton, MenuItems } from "@headlessui/react";
 import { Bars3Icon, UserCircleIcon } from "@heroicons/react/24/solid";
 import Sidebar from "../../components/Sidebar";
-import ProjectCard from "../../components/ProjectCard";
+// import ProjectCard from "../../components/ProjectCard";
 import ProjectModal from "../../components/ProjectModal";
 
 const Dashboard = () => {
