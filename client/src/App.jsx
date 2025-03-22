@@ -6,6 +6,9 @@ import {
 } from "react-router-dom";
 import Register from "./components/register";
 import Login from "./components/login";
+import ClientDashboard from "./pages/ClientDashboard";
+import Dashboard from "./pages/freelancer/Dashboard";
+import AdminDashboard from "./pages/AdminDashboard";
 import ClientDashboard from "./pages/_client/ClientDashboard";
 import Dashboard from "./pages/freelancer/Dashboard";
 
@@ -27,6 +30,7 @@ function App() {
         ) : (
           <Route path="*" element={<Navigate to="/login" />} />
         )} */}
+        <Route path="/admin" element={<AdminDashboard/>}/>
       </Routes>
     </Router>
   );
