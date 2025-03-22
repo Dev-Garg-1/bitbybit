@@ -13,8 +13,11 @@ function App() {
       <Routes>
         <Route path="/" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/client" element={<ClientDashboard />} />
         <Route path="/freelancer" element={<FreelancerDashboard/>} />
+
+
         {/* {token && role === 'freelancer' ? (
           <Route path="/freelancer" element={<FreelancerDashboard />} />
         ) : token && role === 'client' ? (

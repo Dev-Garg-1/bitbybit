@@ -1,107 +1,107 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import socket from '../socket';
+  import React, { useState } from 'react';
+import Freelancers from '../components/client_components/freelancers';
+import FreelancerDetail from '../components/client_components/freelancers_detail';
+import ProjectForm from '../components/client_components/project_form';
+import ProjectDetail from '../components/client_components/project_detail';
+import freelancersData from '../data/freelancers';
+import projectsData from '../data/projects_client';
 
 const ClientDashboard = () => {
-  const [projects, setProjects] = useState([]);
-  const [requests, setRequests] = useState([]);
+  const [selectedFreelancer, setSelectedFreelancer] = useState(null);
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [showProjectForm, setShowProjectForm] = useState(false);
 
-  useEffect(() => {
-    // Fetch projects and requests on component mount
-    const fetchData = async () => {
-      try {
-        const projectRes = await axios.get('http://localhost:5000/api/projects');
-        const requestRes = await axios.get('http://localhost:5000/api/requests');
-
-        setProjects(projectRes.data);
-        setRequests(requestRes.data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
-
-    // Listen for real-time updates
-    socket.on('newRequest', (request) => {
-      setRequests((prev) => [...prev, request]);
-    });
-
-    return () => socket.off('newRequest');
-  }, []);
-
-  // Accept Request
-  const handleAccept = async (id) => {
-    try {
-      await axios.patch(`http://localhost:5000/api/requests/${id}`, { status: 'accepted' });
-      alert('Request accepted!');
-      setRequests(requests.map((req) => req._id === id ? { ...req, status: 'accepted' } : req));
-    } catch (error) {
-      console.error('Error accepting request:', error);
-    }
+  // Freelancer handlers
+  const handleFreelancerClick = (freelancer) => {
+    setSelectedFreelancer(freelancer);
   };
 
-  // Reject Request
-  const handleReject = async (id) => {
-    try {
-      await axios.patch(`http://localhost:5000/api/requests/${id}`, { status: 'rejected' });
-      alert('Request rejected!');
-      setRequests(requests.map((req) => req._id === id ? { ...req, status: 'rejected' } : req));
-    } catch (error) {
-      console.error('Error rejecting request:', error);
-    }
+  const closeFreelancerModal = () => {
+    setSelectedFreelancer(null);
+  };
+
+  // Project handlers
+  const handleProjectClick = (project) => {
+    setSelectedProject(project);
+  };
+
+  const closeProjectModal = () => {
+    setSelectedProject(null);
+  };
+
+  const handleNewProject = () => {
+    setShowProjectForm(true);
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <h1 className="text-3xl font-bold text-blue-600 mb-6">Client Dashboard</h1>
+    <div>
+      <h1 className="text-3xl font-bold text-blue-600 p-4">Client Dashboard</h1>
+      <div className="flex">
+        {/* Left sidebar with projects and notifications */}
+        <div className="w-[85%] min-h-screen bg-gray-50 fixed border-r border-gray-200 p-4">
+          <div className="flex justify-between items-center mb-6">
+            <button
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+              onClick={handleNewProject}
+            >
+              + New Project
+            </button>
 
-      {/* Projects Section */}
-      <div className="mb-10">
-        <h2 className="text-2xl font-semibold mb-4">Your Projects</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((project) => (
-            <div key={project._id} className="bg-white p-6 rounded-lg shadow-md">
-              <h3 className="text-xl font-bold">{project.title}</h3>
-              <p className="text-gray-600 mt-2">{project.description}</p>
-              <p className="text-gray-500 mt-2">Deadline: {new Date(project.deadline).toLocaleDateString()}</p>
+            <div className="relative">
+              <button className="text-gray-600 hover:text-gray-900">
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">3</span>
+                🔔
+              </button>
             </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Freelancer Requests Section */}
-      <div>
-        <h2 className="text-2xl font-semibold mb-4">Freelancer Requests</h2>
-        {requests.length === 0 ? (
-          <p>No pending requests</p>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {requests.map((req) => (
-              <div key={req._id} className="bg-white p-6 rounded-lg shadow-md">
-                <p className="text-lg font-semibold">Freelancer ID: {req.freelancerId}</p>
-                <p className="text-gray-600 mt-2">Project ID: {req.projectId}</p>
-                <p className="text-gray-500 mt-2">Status: {req.status}</p>
-
-                {req.status === 'pending' && (
-                  <div className="mt-4 flex justify-around">
-                    <button
-                      onClick={() => handleAccept(req._id)}
-                      className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-                    >
-                      Accept
-                    </button>
-                    <button
-                      onClick={() => handleReject(req._id)}
-                      className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                    >
-                      Reject
-                    </button>
-                  </div>
-                )}
-              </div>
-            ))}
           </div>
+
+          {showProjectForm ? (
+            <ProjectForm />
+          ) : (
+            <div className="mb-8">
+              <h2 className="text-lg font-semibold mb-4">My Projects</h2>
+
+              <div className="space-y-3">
+                {projectsData.map((project) => (
+                  <div
+                    key={project.id}
+                    className="bg-white p-4 rounded-lg shadow-sm hover:shadow-md cursor-pointer transition-all"
+                    onClick={() => handleProjectClick(project)}
+                  >
+                    <h3 className="font-medium">{project.title}</h3>
+                    <div className="flex justify-between items-center mt-2">
+                      <span className="text-sm text-gray-500">Due: {project.dueDate}</span>
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs ${
+                          project.status === 'Ongoing'
+                            ? 'bg-green-100 text-green-800'
+                            : project.status === 'Done'
+                            ? 'bg-gray-100 text-gray-800'
+                            : 'bg-yellow-100 text-yellow-800'
+                        }`}
+                      >
+                        {project.status}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Right sidebar with freelancers */}
+        <div className="w-[15%] min-h-screen bg-gray-100 fixed right-0 top-0 border-r border-gray-200 p-4">
+          <Freelancers freelancers={freelancersData} onFreelancerClick={handleFreelancerClick} />
+
+          {selectedFreelancer && (
+            <FreelancerDetail freelancer={selectedFreelancer} onClose={closeFreelancerModal} />
+          )}
+        </div>
+
+        {/* Project Detail Modal */}
+        {selectedProject && (
+          <ProjectDetail project={selectedProject} onClose={closeProjectModal} />
         )}
       </div>
     </div>
