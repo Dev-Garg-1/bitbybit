@@ -6,8 +6,8 @@ import {
 } from "react-router-dom";
 import Register from "./components/register";
 import Login from "./components/login";
-import ClientDashboard from "./pages/ClientDashboard";
-import { Dashboard } from "./pages/index";
+import ClientDashboard from "./pages/_client/ClientDashboard";
+import Dashboard from "./pages/freelancer/Dashboard";
 
 function App() {
   const token = localStorage.getItem("token");

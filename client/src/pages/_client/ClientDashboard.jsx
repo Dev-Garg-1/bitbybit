@@ -1,10 +1,11 @@
-  import React, { useState } from 'react';
-import Freelancers from '../components/client_components/freelancers';
-import FreelancerDetail from '../components/client_components/freelancers_detail';
-import ProjectForm from '../components/client_components/project_form';
-import ProjectDetail from '../components/client_components/project_detail';
-import freelancersData from '../data/freelancers';
-import projectsData from '../data/projects_client';
+import React, { useState } from "react";
+import Freelancers from "../../components/client_components/freelancers";
+import FreelancerDetail from "../../components/client_components/freelancers_detail";
+import ProjectForm from "../../components/client_components/project_form";
+import ProjectDetail from "../../components/client_components/project_detail";
+import freelancersData from "../../data/freelancers";
+import projectsData from "../../data/projects_client";
+import Payment from "../../components/Payment";
 
 const ClientDashboard = () => {
   const [selectedFreelancer, setSelectedFreelancer] = useState(null);
@@ -47,9 +48,13 @@ const ClientDashboard = () => {
               + New Project
             </button>
 
+            <Payment/>
+
             <div className="relative">
               <button className="text-gray-600 hover:text-gray-900">
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">3</span>
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                  3
+                </span>
                 🔔
               </button>
             </div>
@@ -70,14 +75,16 @@ const ClientDashboard = () => {
                   >
                     <h3 className="font-medium">{project.title}</h3>
                     <div className="flex justify-between items-center mt-2">
-                      <span className="text-sm text-gray-500">Due: {project.dueDate}</span>
+                      <span className="text-sm text-gray-500">
+                        Due: {project.dueDate}
+                      </span>
                       <span
                         className={`px-2 py-1 rounded-full text-xs ${
-                          project.status === 'Ongoing'
-                            ? 'bg-green-100 text-green-800'
-                            : project.status === 'Done'
-                            ? 'bg-gray-100 text-gray-800'
-                            : 'bg-yellow-100 text-yellow-800'
+                          project.status === "Ongoing"
+                            ? "bg-green-100 text-green-800"
+                            : project.status === "Done"
+                            ? "bg-gray-100 text-gray-800"
+                            : "bg-yellow-100 text-yellow-800"
                         }`}
                       >
                         {project.status}
@@ -92,16 +99,25 @@ const ClientDashboard = () => {
 
         {/* Right sidebar with freelancers */}
         <div className="w-[15%] min-h-screen bg-gray-100 fixed right-0 top-0 border-r border-gray-200 p-4">
-          <Freelancers freelancers={freelancersData} onFreelancerClick={handleFreelancerClick} />
+          <Freelancers
+            freelancers={freelancersData}
+            onFreelancerClick={handleFreelancerClick}
+          />
 
           {selectedFreelancer && (
-            <FreelancerDetail freelancer={selectedFreelancer} onClose={closeFreelancerModal} />
+            <FreelancerDetail
+              freelancer={selectedFreelancer}
+              onClose={closeFreelancerModal}
+            />
           )}
         </div>
 
         {/* Project Detail Modal */}
         {selectedProject && (
-          <ProjectDetail project={selectedProject} onClose={closeProjectModal} />
+          <ProjectDetail
+            project={selectedProject}
+            onClose={closeProjectModal}
+          />
         )}
       </div>
     </div>
