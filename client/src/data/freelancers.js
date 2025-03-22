@@ -7,7 +7,7 @@
       name: "John Doe",
       expertise: "Full Stack Developer",
       rating: 4.8,
-      skills: ["React", "Node.js", "MongoDB"]
+      skills: ["React", "Node.js", "MongoDB"] 
     },
     {
       id: 2, 
