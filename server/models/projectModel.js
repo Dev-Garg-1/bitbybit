@@ -1,0 +1,17 @@
+const mongoose = require('mongoose');
+
+const projectSchema = new mongoose.Schema({
+  title: String,
+  description: String,
+  deadline: Date,
+  clientId: String,
+  requests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Request' }],
+  
+  milestones: [{
+    heading: String,
+    amount: Number
+  }]
+
+});
+
+module.exports = mongoose.model('Project', projectSchema);

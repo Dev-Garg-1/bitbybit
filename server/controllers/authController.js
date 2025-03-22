@@ -2,6 +2,9 @@ const userModel = require('../models/userModel');
 const bcrypt = require('bcrypt');
 const generateToken = require('../utils/generateToken');
 
+const jwt = require('jsonwebtoken');
+
+
 
 module.exports.registerUser = async function (req,res) {
     const { name , role , email , password} = req.body;
@@ -65,3 +68,33 @@ module.exports.logoutUser = function (req,res) {
     res.status(201).send("logout  successful");
     
 };
+
+module.exports.getUserProfile = async function (req, res) {
+    try {
+        const token = req.cookies.token;
+        if (!token) {
+            return res.status(401).send("Unauthorized");
+        }
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const email = decoded.email;
+
+        const user = await userModel.findOne({ email }).select('-password'); // Exclude password from the response
+        if (!user) {
+            return res.status(404).send("User not found");
+        }
+
+        res.status(200).send(user);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+};
+
+module.exports.getFreelancers = async function (req, res) {
+    try {
+        const freelancers = await userModel.find({ role: 'FREELANCER' }).select('-password'); // Exclude password from the response
+        res.status(200).send(freelancers);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
