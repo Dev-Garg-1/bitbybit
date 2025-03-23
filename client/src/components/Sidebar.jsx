@@ -7,7 +7,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
       initial={{ x: -250 }}
       animate={{ x: isOpen ? 0 : -250 }}
       transition={{ type: "spring", stiffness: 300 }}
-      className="fixed left-0 top-0 w-64 h-full bg-gray-800 text-white p-5"
+      className="fixed left-0 top-0 w-64 h-full bg-gray-800 text-white p-5 shadow-lg"
     >
       <button
         onClick={() => setIsOpen(false)}
